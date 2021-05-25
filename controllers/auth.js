@@ -6,7 +6,7 @@ exports.signup = async (req, res, next) => {
     if (foundUser) {
       return res
         .status(403)
-        .json({ error: "Email  is already in use", status: false });
+        .json({ error: "Email is already in use", status: false });
     }
     const user = new User(req.body);
     await user.save();
@@ -44,6 +44,15 @@ exports.signin = async (req, res, next) => {
     }
     //respond with token
     sendTokenResponse(user, 200, res);
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.signout = async (req, res, next) => {
+  try {
+    res.clearCookie("token");
+    res.json({ message: "Signout success" });
   } catch (err) {
     next(err);
   }

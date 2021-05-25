@@ -19,6 +19,7 @@ app.use(cors());
 app.use(express.json());
 
 //routes
+app.use("/user", require("./routes/user"));
 app.use("/api", require("./routes/auth"));
 app.use("/", require("./routes/upload"));
 

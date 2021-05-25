@@ -22,7 +22,7 @@ exports.upload = (req, res, next) => {
   file.mv(`${process.cwd()}/uploads/${file.name}`, async (err) => {
     if (err) {
       console.log(err);
-      return res.status(500).send(err);
+      return res.status(500).json({ error: err });
     }
     //convert excel file to json
     let result = excelToJson({
@@ -58,9 +58,21 @@ exports.upload = (req, res, next) => {
         },
       ],
     });
-    console.log(result);
-    const results = await Performance.insertMany(result.Sheet1);
-    console.log(`${results.insertedCount} documents were inserted`);
+    try {
+      await Performance.deleteMany({});
+    } catch (err) {
+      return res
+        .status(500)
+        .json({ error: "Error 1 Encountered Please Contact Administrator" });
+    }
+
+    try {
+      const results = await Performance.insertMany(result.Sheet1);
+    } catch (err) {
+      return res
+        .status(500)
+        .json({ error: "Error 2 Encountered Please Contact Administrator" });
+    }
 
     //upinsert to data base
     res.json({
@@ -68,4 +80,81 @@ exports.upload = (req, res, next) => {
       filePath: `/uploads/${file.name}`,
     });
   });
+};
+
+exports.stats = async (req, res, next) => {
+  try {
+    //count number of Peerformance
+    const totalPerformance = await Performance.countDocuments();
+    const totalMarketters = await (
+      await Performance.distinct("MARKETER_NAME")
+    ).length;
+    const totalFeeders = await (
+      await Performance.distinct("feeder_code")
+    ).length;
+    const totalTransformers = await (
+      await Performance.distinct("transformer_code")
+    ).length;
+    const totalDistricts = await (
+      await Performance.distinct("district")
+    ).length;
+    //feeder statistics
+    const Feederstats = await Performance.aggregate([
+      {
+        $group: {
+          _id: "$feeder",
+          totalbilledpop: { $sum: "$billed_pop" },
+          totalpaidpop: { $sum: "$paid_pop" },
+        },
+      },
+    ]);
+    //tranformer statistics
+    const Tranformerstats = await Performance.aggregate([
+      {
+        $group: {
+          _id: "$transformer",
+          totalbilledpop: { $sum: "$billed_pop" },
+          totalpaidpop: { $sum: "$paid_pop" },
+        },
+      },
+    ]);
+    //district statistics
+    const Districtstats = await Performance.aggregate([
+      {
+        $group: {
+          _id: "$district",
+          totalbilledpop: { $sum: "$billed_pop" },
+          totalpaidpop: { $sum: "$paid_pop" },
+        },
+      },
+    ]);
+    //district statistics
+    const Totalstats = await Performance.aggregate([
+      {
+        $group: {
+          _id: "$connectiontype",
+          totalbilledpop: { $sum: "$billed_pop" },
+          totalpaidpop: { $sum: "$paid_pop" },
+          totalbilledamt: { $sum: "$billed_amt" },
+          totalpaidamt: { $sum: "$paid_amt" },
+        },
+      },
+    ]);
+
+    res.json({
+      totalPerformance,
+      totalMarketters,
+      totalFeeders,
+      totalTransformers,
+      totalDistricts,
+      Totalstats,
+      Districtstats,
+      Tranformerstats,
+      Feederstats,
+    });
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ error: "Error 3 Encountered Please Contact Administrator" });
+  }
 };
