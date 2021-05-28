@@ -34,3 +34,12 @@ exports.updateuser = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.finduser = async (req, res, next) => {
+  try {
+    const users = await User.find({ _id: req.params.id });
+    res.json({ users });
+  } catch (err) {
+    next(err);
+  }
+};

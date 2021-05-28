@@ -27,3 +27,9 @@ exports.schemas = {
     password: Joi.string().required(),
   }),
 };
+
+exports.emailschemas = {
+  authSchema: Joi.object({
+    email: Joi.string().email(),
+  }),
+};

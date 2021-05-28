@@ -86,6 +86,7 @@ exports.stats = async (req, res, next) => {
   try {
     //count number of Peerformance
     const totalPerformance = await Performance.countDocuments();
+
     const totalMarketters = await (
       await Performance.distinct("MARKETER_NAME")
     ).length;
@@ -107,6 +108,9 @@ exports.stats = async (req, res, next) => {
           totalpaidpop: { $sum: "$paid_pop" },
         },
       },
+      {
+        $sort: { _id: 1 },
+      },
     ]);
     //tranformer statistics
     const Tranformerstats = await Performance.aggregate([
@@ -117,6 +121,9 @@ exports.stats = async (req, res, next) => {
           totalpaidpop: { $sum: "$paid_pop" },
         },
       },
+      {
+        $sort: { _id: 1 },
+      },
     ]);
     //district statistics
     const Districtstats = await Performance.aggregate([
@@ -126,6 +133,9 @@ exports.stats = async (req, res, next) => {
           totalbilledpop: { $sum: "$billed_pop" },
           totalpaidpop: { $sum: "$paid_pop" },
         },
+      },
+      {
+        $sort: { _id: 1 },
       },
     ]);
     //district statistics
@@ -138,6 +148,9 @@ exports.stats = async (req, res, next) => {
           totalbilledamt: { $sum: "$billed_amt" },
           totalpaidamt: { $sum: "$paid_amt" },
         },
+      },
+      {
+        $sort: { _id: 1 },
       },
     ]);
 
@@ -156,5 +169,49 @@ exports.stats = async (req, res, next) => {
     return res
       .status(500)
       .json({ error: "Error 3 Encountered Please Contact Administrator" });
+  }
+};
+
+exports.bot = async (req, res, next) => {
+  try {
+    //feeder statistics
+    const Sendbotstats = await Performance.find({}).select({
+      paid_pop: 1,
+      billed_pop: 1,
+      MARKETER_NAME: 1,
+      STAFF_ID: 1,
+    });
+    res.json({
+      Sendbotstats,
+    });
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ error: "Error 4 Encountered Please Contact Administrator" });
+  }
+};
+//function to add leaading zeros
+function pad(num, size) {
+  num = num.toString();
+  while (num.length < size) num = "0" + num;
+  return num;
+}
+
+exports.test = async (req, res, next) => {
+  let staffid = [];
+  try {
+    const checkid = await Performance.distinct("STAFF_ID");
+
+    checkid.forEach((u, i) => {
+      let im = pad(u, 5);
+      staffid.push(im);
+    });
+
+    //dela
+    res.json({
+      staffid,
+    });
+  } catch (err) {
+    console.log(err);
   }
 };
