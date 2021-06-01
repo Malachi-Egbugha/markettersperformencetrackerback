@@ -1,13 +1,21 @@
 const express = require("express");
 const router = express.Router();
-const { protect, authorize } = require("../middleware/auth");
+const { protect, authorize, apiauthorize } = require("../middleware/auth");
 
-const { upload, readall, stats, bot, test } = require("../controllers/upload");
+const {
+  upload,
+  readall,
+  stats,
+  bot,
+  test,
+  findstaff,
+} = require("../controllers/upload");
 
 router.post("/read", protect, authorize("admin", "superadmin"), readall);
 router.post("/upload", upload);
 router.post("/stats", protect, authorize("admin", "superadmin"), stats);
-router.post("/bot", bot);
+router.post("/bot", apiauthorize, bot);
+router.post("/staffperf/:id", apiauthorize, findstaff);
 router.get("/test", test);
 
 module.exports = router;

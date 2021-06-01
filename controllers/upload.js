@@ -1,5 +1,6 @@
 const excelToJson = require("convert-excel-to-json");
 const Performance = require("../models/performances");
+var dateFormat = require("dateformat");
 
 //read specific leave
 exports.readall = async (req, res, next) => {
@@ -213,5 +214,25 @@ exports.test = async (req, res, next) => {
     });
   } catch (err) {
     console.log(err);
+  }
+};
+//find performance by chat id to send to bot api
+exports.findstaff = async (req, res, next) => {
+  try {
+    let message = "";
+    const staff = await Performance.find({
+      STAFF_ID: parseInt(req.params.id, 10),
+    });
+
+    staff.forEach((u, i) => {
+      let performance = Math.ceil((u.paid_pop / u.billed_pop) * 100);
+      let dat = dateFormat(u.createdAt, "ddd, mmmm, yyyy");
+
+      message += `Your Performance on ${dat} for Transfomer: ${u.transformer}= ${performance}% +++  `;
+    });
+
+    res.json({ message });
+  } catch (err) {
+    next(err);
   }
 };
