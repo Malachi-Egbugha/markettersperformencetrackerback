@@ -14,7 +14,7 @@ const performanceSchema = new Schema(
     billed_pop: Number,
     paid_pop: Number,
     billed_amt: Number,
-    paid_amt: String,
+    paid_amt: Number,
     arrears: Number,
     bill_type: String,
     MARKETER_NAME: String,

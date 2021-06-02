@@ -59,6 +59,7 @@ exports.upload = (req, res, next) => {
         },
       ],
     });
+
     try {
       await Performance.deleteMany({});
     } catch (err) {
@@ -89,7 +90,7 @@ exports.stats = async (req, res, next) => {
     const totalPerformance = await Performance.countDocuments();
 
     const totalMarketters = await (
-      await Performance.distinct("MARKETER_NAME")
+      await Performance.distinct("STAFF_ID")
     ).length;
     const totalFeeders = await (
       await Performance.distinct("feeder_code")
@@ -107,6 +108,8 @@ exports.stats = async (req, res, next) => {
           _id: "$feeder",
           totalbilledpop: { $sum: "$billed_pop" },
           totalpaidpop: { $sum: "$paid_pop" },
+          totalbilledamt: { $sum: "$billed_amt" },
+          totalpaidamt: { $sum: "$paid_amt" },
         },
       },
       {
@@ -120,6 +123,23 @@ exports.stats = async (req, res, next) => {
           _id: "$transformer",
           totalbilledpop: { $sum: "$billed_pop" },
           totalpaidpop: { $sum: "$paid_pop" },
+          totalbilledamt: { $sum: "$billed_amt" },
+          totalpaidamt: { $sum: "$paid_amt" },
+        },
+      },
+      {
+        $sort: { _id: 1 },
+      },
+    ]);
+    //Marketer statistics
+    const Marketterstats = await Performance.aggregate([
+      {
+        $group: {
+          _id: "$MARKETER_NAME",
+          totalbilledpop: { $sum: "$billed_pop" },
+          totalpaidpop: { $sum: "$paid_pop" },
+          totalbilledamt: { $sum: "$billed_amt" },
+          totalpaidamt: { $sum: "$paid_amt" },
         },
       },
       {
@@ -133,6 +153,8 @@ exports.stats = async (req, res, next) => {
           _id: "$district",
           totalbilledpop: { $sum: "$billed_pop" },
           totalpaidpop: { $sum: "$paid_pop" },
+          totalbilledamt: { $sum: "$billed_amt" },
+          totalpaidamt: { $sum: "$paid_amt" },
         },
       },
       {
@@ -165,6 +187,7 @@ exports.stats = async (req, res, next) => {
       Districtstats,
       Tranformerstats,
       Feederstats,
+      Marketterstats,
     });
   } catch (err) {
     return res
@@ -179,8 +202,11 @@ exports.bot = async (req, res, next) => {
     const Sendbotstats = await Performance.find({}).select({
       paid_pop: 1,
       billed_pop: 1,
+      paid_amt: 1,
+      billed_amt: 1,
       MARKETER_NAME: 1,
       STAFF_ID: 1,
+      createdAt: 1,
     });
     res.json({
       Sendbotstats,
@@ -228,7 +254,7 @@ exports.findstaff = async (req, res, next) => {
       let performance = Math.ceil((u.paid_pop / u.billed_pop) * 100);
       let dat = dateFormat(u.createdAt, "ddd, mmmm, yyyy");
 
-      message += `Your Performance on ${dat} for Transfomer: ${u.transformer}= ${performance}% +++  `;
+      message += `Your Performance on ${dat} for Transfomer: ${u.transformer}= ${performance}%  Billed POP: ${u.billed_pop} Paid POP: ${u.paid_pop} +++  `;
     });
 
     res.json({ message });
