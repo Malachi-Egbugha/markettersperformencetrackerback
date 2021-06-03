@@ -251,10 +251,19 @@ exports.findstaff = async (req, res, next) => {
     });
 
     staff.forEach((u, i) => {
-      let performance = Math.ceil((u.paid_pop / u.billed_pop) * 100);
-      let dat = dateFormat(u.createdAt, "ddd, mmmm, yyyy");
+      let ce = Math.round((u.paid_pop / u.billed_pop) * 100);
+      let cc = Math.round((u.paid_amt / u.billed_amt) * 100);
+      let dat = dateFormat(u.createdAt, "d, mmmm, yyyy");
 
-      message += `Your Performance on ${dat} for Transfomer: ${u.transformer}= ${performance}%  Billed POP: ${u.billed_pop} Paid POP: ${u.paid_pop} +++  `;
+      message += `Your Performance on ${dat} for Transfomer: ${
+        u.transformer
+      } CE:${ce}% CC:${cc}%  Billed POP: ${u.billed_pop} Paid POP: ${
+        u.paid_pop
+      } Billed Amount: ${Number(u.billed_amt)
+        .toFixed(2)
+        .replace(/\d(?=(\d{3})+\.)/g, "$&,")} Paid Amount: ${Number(u.paid_amt)
+        .toFixed(2)
+        .replace(/\d(?=(\d{3})+\.)/g, "$&,")} +++  `;
     });
 
     res.json({ message });

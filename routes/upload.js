@@ -11,9 +11,19 @@ const {
   findstaff,
 } = require("../controllers/upload");
 
-router.post("/read", protect, authorize("admin", "superadmin"), readall);
+router.post(
+  "/read",
+  protect,
+  authorize("admin", "superadmin", "normal"),
+  readall
+);
 router.post("/upload", upload);
-router.post("/stats", protect, authorize("admin", "superadmin"), stats);
+router.post(
+  "/stats",
+  protect,
+  authorize("admin", "superadmin", "normal"),
+  stats
+);
 router.post("/bot", apiauthorize, bot);
 router.post("/staffperf/:id", apiauthorize, findstaff);
 router.get("/test", test);
