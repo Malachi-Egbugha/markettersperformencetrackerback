@@ -2,6 +2,7 @@ const express = require("express");
 const fileUpload = require("express-fileupload");
 //const morgan = require("morgan");
 const mongoose = require("mongoose");
+let nodemailer = require("nodemailer");
 
 const connectdb = require("./config/db");
 

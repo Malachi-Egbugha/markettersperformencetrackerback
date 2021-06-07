@@ -110,6 +110,8 @@ exports.stats = async (req, res, next) => {
           totalpaidpop: { $sum: "$paid_pop" },
           totalbilledamt: { $sum: "$billed_amt" },
           totalpaidamt: { $sum: "$paid_amt" },
+          district: { $last: "$district" },
+          feeder_code: { $last: "$feeder_code" },
         },
       },
       {
@@ -125,8 +127,11 @@ exports.stats = async (req, res, next) => {
           totalpaidpop: { $sum: "$paid_pop" },
           totalbilledamt: { $sum: "$billed_amt" },
           totalpaidamt: { $sum: "$paid_amt" },
+          district: { $last: "$district" },
+          feeder: { $last: "$feeder" },
         },
       },
+
       {
         $sort: { _id: 1 },
       },
@@ -140,8 +145,10 @@ exports.stats = async (req, res, next) => {
           totalpaidpop: { $sum: "$paid_pop" },
           totalbilledamt: { $sum: "$billed_amt" },
           totalpaidamt: { $sum: "$paid_amt" },
+          totalCount: { $sum: 1 },
         },
       },
+
       {
         $sort: { _id: 1 },
       },
@@ -170,6 +177,7 @@ exports.stats = async (req, res, next) => {
           totalpaidpop: { $sum: "$paid_pop" },
           totalbilledamt: { $sum: "$billed_amt" },
           totalpaidamt: { $sum: "$paid_amt" },
+          totalarrears: { $sum: "$arrears" },
         },
       },
       {
@@ -183,11 +191,12 @@ exports.stats = async (req, res, next) => {
       totalFeeders,
       totalTransformers,
       totalDistricts,
-      Totalstats,
-      Districtstats,
-      Tranformerstats,
       Feederstats,
+      Tranformerstats,
       Marketterstats,
+      Totalstats,
+
+      Districtstats,
     });
   } catch (err) {
     return res

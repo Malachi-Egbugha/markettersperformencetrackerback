@@ -1,4 +1,6 @@
 const User = require("../models/users");
+const { mail } = require("../middleware/mail");
+
 exports.signup = async (req, res, next) => {
   try {
     const { email } = req.body;
@@ -8,8 +10,10 @@ exports.signup = async (req, res, next) => {
         .status(403)
         .json({ error: "Email is already in use", status: false });
     }
+    const message = `You have been signed up as a user on the MPT APP. Your Credentials are Username=${email} Password:eedc01. Please Login and Change your password`;
     const user = new User(req.body);
     await user.save();
+    await mail(email, "MPT Profile", message);
     res.json({ user, status: true });
   } catch (err) {
     next(err);

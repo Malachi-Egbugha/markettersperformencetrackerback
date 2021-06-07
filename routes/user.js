@@ -16,7 +16,7 @@ router.put(
 router.put(
   "/updatedetail/:id",
   protect,
-  authorize("admin", "superadmin"),
+  authorize("admin", "superadmin", "normal"),
   updateuser
 );
 router.post("/finduser/:id", finduser);

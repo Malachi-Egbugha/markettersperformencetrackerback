@@ -1,5 +1,6 @@
 const User = require("../models/users");
 const bcrypt = require("bcryptjs");
+const { mail } = require("../middleware/mail");
 
 exports.readall = async (req, res, next) => {
   try {
@@ -27,6 +28,12 @@ exports.updateuser = async (req, res, next) => {
     if (!user) {
       //return json  false response
       return res.status(403).json({ error: "Invalid credentials" });
+    }
+    if (req.body.password) {
+      const { email } = user;
+
+      let message = `Your password has been reset. Your new password is eedc01. Please log in and change your Password`;
+      await mail(email, "MPT Profile", message);
     }
     //return json true response
     res.json({ status: true, user });
