@@ -26,6 +26,6 @@ app.use("/api", require("./routes/auth"));
 app.use("/", require("./routes/upload"));
 
 //Start the server
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 5056;
 app.listen(port);
 console.log(`Server listening at ${port}`);
