@@ -10,7 +10,7 @@ exports.mail = async function mail(to, subject, textmessage) {
     secure: true,
   });
   const mailData = {
-    from: '"From MPT APP" <megbugha@enugudisco.com>', // sender address
+    from: '"From MPT APP" <noreply@enugudisco.com>', // sender address
     to: `${to}`, // list of receivers
     subject: `${subject}`,
     text: `${textmessage}`,

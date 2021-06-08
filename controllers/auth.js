@@ -10,7 +10,8 @@ exports.signup = async (req, res, next) => {
         .status(403)
         .json({ error: "Email is already in use", status: false });
     }
-    const message = `You have been signed up as a user on the MPT APP. Your Credentials are Username=${email} Password:eedc01. Please Login and Change your password`;
+    const message = `Your account creation on MPT APP is successful. \n Login Email: ${email} \n Portal Link: http://cdap.myeedc.com:5055/ \n Default-Password: changeMe123! \n Please Login and change your Password `;
+
     const user = new User(req.body);
     await user.save();
     await mail(email, "MPT Profile", message);

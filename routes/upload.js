@@ -20,8 +20,8 @@ router.post(
 router.post("/upload", upload);
 router.post(
   "/stats",
-  //protect,
-  //authorize("admin", "superadmin", "management"),
+  protect,
+  authorize("admin", "superadmin", "management"),
   stats
 );
 router.post("/bot", apiauthorize, bot);
