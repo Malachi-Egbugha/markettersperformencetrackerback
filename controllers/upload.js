@@ -129,6 +129,7 @@ exports.stats = async (req, res, next) => {
           totalpaidamt: { $sum: "$paid_amt" },
           district: { $last: "$district" },
           feeder: { $last: "$feeder" },
+          transformer_code: { $last: "$transformer_code" },
         },
       },
 

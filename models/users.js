@@ -8,7 +8,7 @@ const userSchema = new Schema(
     email: String,
     usertype: {
       type: String,
-      default: "normal",
+      default: "management",
     },
     password: String,
     status: {

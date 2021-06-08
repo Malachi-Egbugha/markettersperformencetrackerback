@@ -14,14 +14,14 @@ const {
 router.post(
   "/read",
   protect,
-  authorize("admin", "superadmin", "normal"),
+  authorize("admin", "superadmin", "management"),
   readall
 );
 router.post("/upload", upload);
 router.post(
   "/stats",
   //protect,
-  //authorize("admin", "superadmin", "normal"),
+  //authorize("admin", "superadmin", "management"),
   stats
 );
 router.post("/bot", apiauthorize, bot);
