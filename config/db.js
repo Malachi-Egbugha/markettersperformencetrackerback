@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const connectDb = async () => {
   try {
-    const conn = await mongoose.connect(process.env.DATABASE || 8080, {
+    const conn = await mongoose.connect(process.env.LIVEDATABASE, {
       useNewUrlParser: true,
       useCreateIndex: true,
       useFindAndModify: false,
