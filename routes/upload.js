@@ -9,6 +9,7 @@ const {
   bot,
   test,
   findstaff,
+  signup,
 } = require("../controllers/upload");
 
 router.post(
@@ -18,6 +19,7 @@ router.post(
   readall
 );
 router.post("/upload", upload);
+router.post("/manualupload", protect, authorize("admin", "superadmin"), signup);
 router.post(
   "/stats",
   protect,

@@ -129,6 +129,7 @@ exports.stats = async (req, res, next) => {
           totalpaidamt: { $sum: "$paid_amt" },
           district: { $last: "$district" },
           feeder: { $last: "$feeder" },
+          feeder_code: { $last: "$feeder_code" },
           transformer_code: { $last: "$transformer_code" },
         },
       },
@@ -277,6 +278,25 @@ exports.findstaff = async (req, res, next) => {
     });
 
     res.json({ message });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.signup = async (req, res, next) => {
+  try {
+    const { STAFF_ID } = req.body;
+    const foundPerf = await Performance.findOne({
+      STAFF_ID: parseInt(req.params.id, 10),
+    });
+    if (foundPerf) {
+      return res
+        .status(403)
+        .json({ error: "Staff Reg Number  is already in use", status: false });
+    }
+    const perf = new Performance(req.body);
+    await perf.save();
+    res.json({ perf });
   } catch (err) {
     next(err);
   }

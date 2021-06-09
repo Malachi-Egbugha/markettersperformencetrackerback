@@ -6,9 +6,9 @@ const { signup, signin, signout } = require("../controllers/auth");
 
 router.post(
   "/signup",
-  validateBody(schemas.authSchema),
-  protect,
-  authorize("admin", "superadmin"),
+  //validateBody(schemas.authSchema),
+  //protect,
+  //authorize("admin", "superadmin"),
   signup
 );
 router.post("/signin", validateBody(schemas.authSchema), signin);

@@ -32,7 +32,7 @@ exports.updateuser = async (req, res, next) => {
     if (req.body.password) {
       const { email } = user;
 
-      let message = `Your password has been reset. Your new password is eedc01. Please log in and change your Password`;
+      let message = `Your password was reset. \n Your new password is changeMe123!. \n Please log in and change your Password`;
       await mail(email, "MPT Profile", message);
     }
     //return json true response
