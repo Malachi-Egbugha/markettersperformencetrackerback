@@ -4,8 +4,8 @@ exports.mail = async function mail(to, subject, textmessage) {
     port: 465, // true for 465, false for other ports
     host: "smtp.gmail.com",
     auth: {
-      user: "megbugha@enugudisco.com",
-      pass: "m0645032maeg1987",
+      user: "noreply@enugudisco.com",
+      pass: "Enugudisco@123",
     },
     secure: true,
   });
