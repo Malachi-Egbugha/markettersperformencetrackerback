@@ -218,6 +218,8 @@ exports.bot = async (req, res, next) => {
       MARKETER_NAME: 1,
       STAFF_ID: 1,
       createdAt: 1,
+      transformer: 1,
+      transformer_code: 1,
     });
     res.json({
       Sendbotstats,
@@ -265,16 +267,20 @@ exports.findstaff = async (req, res, next) => {
       let ce = Math.round((u.paid_pop / u.billed_pop) * 100);
       let cc = Math.round((u.paid_amt / u.billed_amt) * 100);
       let dat = dateFormat(u.createdAt, "d, mmmm, yyyy");
-
-      message += `Your Performance on ${dat} for Transfomer: ${
+      message += `Staff Name: ${u.MARKETER_NAME}, DSS Name:${
         u.transformer
-      } CE:${ce}% CC:${cc}%  Billed POP: ${u.billed_pop} Paid POP: ${
+      }, DSS ID:${u.transformer_code}, Billed Population : ${
+        u.billed_pop
+      }, Paid Population: ${
         u.paid_pop
-      } Billed Amount: ${Number(u.billed_amt)
+      }, Collection Coverage: ${ce}%, Billed Amount: ${u.billed_amt
         .toFixed(2)
-        .replace(/\d(?=(\d{3})+\.)/g, "$&,")} Paid Amount: ${Number(u.paid_amt)
+        .replace(/\d(?=(\d{3})+\.)/g, "$&,")}, Paid Amount: ${u.paid_amt
         .toFixed(2)
-        .replace(/\d(?=(\d{3})+\.)/g, "$&,")} +++  `;
+        .replace(
+          /\d(?=(\d{3})+\.)/g,
+          "$&,"
+        )}, Collection Efficiency:${ce}%, Date:${dat} +++++++++++++++`;
     });
 
     res.json({ message });
