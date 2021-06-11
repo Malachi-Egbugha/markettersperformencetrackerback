@@ -267,20 +267,20 @@ exports.findstaff = async (req, res, next) => {
       let ce = Math.round((u.paid_pop / u.billed_pop) * 100);
       let cc = Math.round((u.paid_amt / u.billed_amt) * 100);
       let dat = dateFormat(u.createdAt, "d, mmmm, yyyy");
-      message += `Staff Name: ${u.MARKETER_NAME}, DSS Name:${
+      message += `Staff Name: ${u.MARKETER_NAME},\nDSS Name:${
         u.transformer
-      }, DSS ID:${u.transformer_code}, Billed Population : ${
+      },\nDSS ID:${u.transformer_code},\nBilled Population : ${
         u.billed_pop
-      }, Paid Population: ${
+      },\nPaid Population: ${
         u.paid_pop
-      }, Collection Coverage: ${ce}%, Billed Amount: ${u.billed_amt
+      },\nCollection Coverage: ${ce}%, Billed Amount: ${u.billed_amt
         .toFixed(2)
         .replace(/\d(?=(\d{3})+\.)/g, "$&,")}, Paid Amount: ${u.paid_amt
         .toFixed(2)
         .replace(
           /\d(?=(\d{3})+\.)/g,
           "$&,"
-        )}, Collection Efficiency:${ce}%, Date:${dat} +++++++++++++++`;
+        )},\nCollection Efficiency:${ce}%, Date:${dat}\n\n +++++++++++++++\n`;
     });
 
     res.json({ message });
