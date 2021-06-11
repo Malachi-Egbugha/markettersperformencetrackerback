@@ -280,7 +280,7 @@ exports.findstaff = async (req, res, next) => {
         .replace(
           /\d(?=(\d{3})+\.)/g,
           "$&,"
-        )},\nCollection Efficiency:${ce}%, Date:${dat}\n +++++++++++++++\n\n`;
+        )},\nCollection Efficiency:${ce}%,\nDate:${dat}\n +++++++++++++++\n\n`;
     });
 
     res.json({ message });
