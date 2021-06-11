@@ -273,14 +273,14 @@ exports.findstaff = async (req, res, next) => {
         u.billed_pop
       },\nPaid Population: ${
         u.paid_pop
-      },\nCollection Coverage: ${ce}%, Billed Amount: ${u.billed_amt
+      },\nCollection Coverage: ${ce}%,\nBilled Amount: ${u.billed_amt
         .toFixed(2)
-        .replace(/\d(?=(\d{3})+\.)/g, "$&,")}, Paid Amount: ${u.paid_amt
+        .replace(/\d(?=(\d{3})+\.)/g, "$&,")},\nPaid Amount: ${u.paid_amt
         .toFixed(2)
         .replace(
           /\d(?=(\d{3})+\.)/g,
           "$&,"
-        )},\nCollection Efficiency:${ce}%, Date:${dat}\n\n +++++++++++++++\n`;
+        )},\nCollection Efficiency:${ce}%, Date:${dat}\n +++++++++++++++\n\n`;
     });
 
     res.json({ message });
