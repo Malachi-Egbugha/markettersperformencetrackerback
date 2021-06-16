@@ -264,8 +264,8 @@ exports.findstaff = async (req, res, next) => {
     });
 
     staff.forEach((u, i) => {
-      let ce = Math.round((u.paid_pop / u.billed_pop) * 100);
-      let cc = Math.round((u.paid_amt / u.billed_amt) * 100);
+      let cc = Math.round((u.paid_pop / u.billed_pop) * 100);
+      let ce = Math.round((u.paid_amt / u.billed_amt) * 100);
       let dat = dateFormat(u.createdAt, "d, mmmm, yyyy");
       message += `Staff Name: ${u.MARKETER_NAME},\nDSS Name:${
         u.transformer
@@ -273,7 +273,7 @@ exports.findstaff = async (req, res, next) => {
         u.billed_pop
       },\nPaid Population: ${
         u.paid_pop
-      },\nCollection Coverage: ${ce}%,\nBilled Amount: ${u.billed_amt
+      },\nCollection Coverage: ${cc}%,\nBilled Amount: ${u.billed_amt
         .toFixed(2)
         .replace(/\d(?=(\d{3})+\.)/g, "$&,")},\nPaid Amount: ${u.paid_amt
         .toFixed(2)
