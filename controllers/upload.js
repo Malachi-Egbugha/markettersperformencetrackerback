@@ -284,7 +284,7 @@ exports.findstaff = async (req, res, next) => {
     });
     let messages = message.split("+++++++++++++++");
 
-    res.json({ newmessage });
+    res.json({ messages });
   } catch (err) {
     next(err);
   }
